@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include <fcntl.h>
 
 int main(int argc, char* argv[])
 {
@@ -19,14 +20,19 @@ int main(int argc, char* argv[])
 		}
 
 		if (strcmp("-", argv[1])) {
-			// TODO implement me: open input file for reading
-			// infd = ...
-			assert(0);
+
+			if ((infd = open(argv[1], O_RDONLY)) == -1) {
+				perror("Error OPENing INPUT file");
+				return EXIT_FAILURE;
+			}
 		}
+
 		if (strcmp("-", argv[2])) {
-			// TODO implement me: open output file for writing
-			// outfd = ...
-			assert(0);
+
+			if ((outfd = open(argv[2], O_WRONLY)) == -1) {
+				perror("Error OPENing OUTPUT file");
+				return EXIT_FAILURE;
+			}
 		}
 	}
 
@@ -34,7 +40,16 @@ int main(int argc, char* argv[])
 		perror("Error copying");
 		return EXIT_FAILURE;
 	}
+	
+	if (infd != 0 && close(infd) == -1) {
+		perror("Error closing INPUT file");
+		return EXIT_FAILURE;
+	}	
+	
+	if (outfd != 1 && close(outfd) == -1) {
+		perror("Error closing OUTPUT file");
+		return EXIT_FAILURE;
+	}
 
-	// TODO close files (if not stdin/stdout)
 	return EXIT_SUCCESS;
 }
