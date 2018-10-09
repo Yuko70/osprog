@@ -29,7 +29,7 @@ int main(int argc, char* argv[])
 
 		if (strcmp("-", argv[2])) {
 
-			if ((outfd = open(argv[2], O_WRONLY)) == -1) {
+			if ((outfd = open(argv[2], O_WRONLY|O_CREAT, 0666)) == -1) {
 				perror("Error OPENing OUTPUT file");
 				return EXIT_FAILURE;
 			}
